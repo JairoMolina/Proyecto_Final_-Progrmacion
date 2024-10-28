@@ -41,4 +41,10 @@ dependencies {
 
     // Agrega la dependencia de esta forma:
     implementation("com.google.android.gms:play-services-location:21.0.1")
+
+    implementation ("androidx.recyclerview:recyclerview:1.3.2")
+    implementation ("androidx.cardview:cardview:1.0.0")
+
+    implementation("androidx.room:room-runtime:2.6.1")
+    annotationProcessor("androidx.room:room-compiler:2.6.1")
 }
