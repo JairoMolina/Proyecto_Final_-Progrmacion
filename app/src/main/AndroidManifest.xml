@@ -4,7 +4,7 @@
 
     <uses-feature android:name="android.hardware.camera" android:required="true" />
 
-    
+
     <uses-feature android:name="android.hardware.location.gps" android:required="true" />
 
     <!-- Permiso de cámara aquí -->
@@ -26,6 +26,12 @@
         android:theme="@style/Theme.GpsCamara"
         tools:targetApi="31">
         <activity
+            android:name=".FotosTomadas"
+            android:exported="false" />
+        <activity
+            android:name=".VerFotosActivity"
+            android:exported="false"/>
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
@@ -34,6 +40,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+
     </application>
 
 </manifest>

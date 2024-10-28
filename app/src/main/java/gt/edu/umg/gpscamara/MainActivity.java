@@ -1,5 +1,6 @@
 package gt.edu.umg.gpscamara;
 
+
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -8,15 +9,21 @@ import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import gt.edu.umg.gpscamara.FotosGuardadas.BitmapUtils;
+import gt.edu.umg.gpscamara.FotosGuardadas.DatabaseHelper;
 
 public class MainActivity extends AppCompatActivity {
 
     private Button bttnCamara1;
+    private Button buttnFotosGuardadas;
     private static final int CAMERA_PERMISSION_CODE = 100;
     private static final int LOCATION_PERMISSION_CODE = 101;
     private FusedLocationProviderClient fusedLocationClient;
@@ -29,18 +36,25 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.maincamara);
 
-        //
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         bttnCamara1 = findViewById(R.id.bttnCamara1);
+        buttnFotosGuardadas = findViewById(R.id.buttnFotosTomadas);
 
         bttnCamara1.setOnClickListener(v -> {
             verificarPermisos();
         });
+
+        buttnFotosGuardadas.setOnClickListener(v -> {
+            abrirFotosGuardadas();
+        });
+    }
+
+    private void abrirFotosGuardadas() {
+        Intent intent = new Intent(MainActivity.this, VerFotosActivity.class);
+        startActivity(intent);
     }
 
     private void verificarPermisos() {
-
-        // Verificar permisos de cámara y ubicación
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
                 checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
@@ -54,7 +68,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @SuppressLint("MissingPermission")
-//
     private void obtenerUbicacionYAbrirCamara() {
         fusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, location -> {
@@ -62,12 +75,10 @@ public class MainActivity extends AppCompatActivity {
                         currentLatitude = location.getLatitude();
                         currentLongitude = location.getLongitude();
 
-                        // Mostrar la ubicación (opcional)
                         Toast.makeText(MainActivity.this,
                                 "Lat: " + currentLatitude + ", Long: " + currentLongitude,
                                 Toast.LENGTH_SHORT).show();
 
-                        // Abrir la cámara
                         abrirCamara();
                     } else {
                         Toast.makeText(MainActivity.this,
@@ -86,22 +97,50 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 0 && resultCode == RESULT_OK) {
+            Bundle extras = data.getExtras();
+            Bitmap imageBitmap = (Bitmap) extras.get("data");
 
-            guardarFotoYUbicacion(data);
+            // Iniciar FotosTomadas con la imagen y coordenadas
+            Intent intent = new Intent(MainActivity.this, FotosTomadas.class);
+            intent.putExtra("imageBitmap", imageBitmap);
+            intent.putExtra("currentLatitude", currentLatitude);
+            intent.putExtra("currentLongitude", currentLongitude);
+            startActivity(intent);
         }
     }
-   //
-    private void guardarFotoYUbicacion(Intent data) {
-        Bitmap imageBitmap = (Bitmap) data.getExtras().get("data");
 
-        // Crear un Intent para abrir activity_fotostomadas
-        Intent intent = new Intent(MainActivity.this, FotosTomadasActivity.class);
-        intent.putExtra("imageBitmap", imageBitmap);
-        intent.putExtra("currentLatitude", currentLatitude);
-        intent.putExtra("currentLongitude", currentLongitude);
-        startActivity(intent);
+    private void guardarFoto(Bitmap imageBitmap) {
+        ExecutorService executorService = Executors.newSingleThreadExecutor();
+        executorService.execute(() -> {
+            try {
+                byte[] imageBytes = BitmapUtils.bitmapToByteArray(imageBitmap);
+
+                // Usar DatabaseHelper en lugar de Room
+                DatabaseHelper dbHelper = DatabaseHelper.getInstance(getApplicationContext());
+                long id = dbHelper.insertFoto(imageBytes, currentLatitude, currentLongitude);
+
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "Foto guardada exitosamente", Toast.LENGTH_SHORT).show();
+                    ImageView imageView = findViewById(R.id.imageViewFotoTomada);
+                    if (imageView != null) {
+                        imageView.setImageDrawable(null);
+                    }
+                    Button btnGuardar = findViewById(R.id.bttnGuardar);
+                    Button btnEliminar = findViewById(R.id.bttnEliminar);
+                    if (btnGuardar != null) btnGuardar.setEnabled(false);
+                    if (btnEliminar != null) btnEliminar.setEnabled(false);
+                });
+            } catch (Exception e) {
+                runOnUiThread(() -> {
+                    Toast.makeText(this, "Error al guardar la foto: " + e.getMessage(),
+                            Toast.LENGTH_LONG).show();
+                });
+                e.printStackTrace();
+            }
+            executorService.shutdown();
+        });
     }
-    //
+
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions,
                                            int[] grantResults) {
@@ -114,5 +153,4 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
-
 }
