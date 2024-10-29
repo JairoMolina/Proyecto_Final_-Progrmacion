@@ -9,8 +9,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import gt.edu.umg.gpscamara.Adapter.FotosAdapter;
-import gt.edu.umg.gpscamara.FotosGuardadas.DatabaseHelper;
-import gt.edu.umg.gpscamara.FotosGuardadas.Foto;
+import gt.edu.umg.gpscamara.BaseDatos.DatabaseHelper;
+import gt.edu.umg.gpscamara.BaseDatos.Foto;
 import gt.edu.umg.gpscamara.R;
 
 

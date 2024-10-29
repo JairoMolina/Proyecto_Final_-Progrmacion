@@ -12,20 +12,41 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:padding="8dp">
+        android:padding="16dp"
+        android:background="@android:color/white">
 
         <ImageView
             android:id="@+id/imageViewFoto"
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:scaleType="centerCrop"
-            android:contentDescription="Foto"/>
+            android:contentDescription="Foto"
+            android:background="#E8EAF6"/>
+
+        <TextView
+            android:id="@+id/tvNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textAlignment="center"
+            android:textColor="#1976D2"/>
+
+        <TextView
+            android:id="@+id/tvAceptado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textSize="14sp"
+            android:textAlignment="center"
+            android:textColor="#1976D2"/>
 
         <TextView
             android:id="@+id/tvFecha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:textSize="14sp"
             android:textStyle="bold"
             android:textAlignment="center"/>
@@ -61,11 +82,9 @@
                 android:layout_height="wrap_content"
                 android:text="Eliminar"
                 android:textSize="12sp"
-                app:backgroundTint="#FF0000"
-                style="@style/Widget.MaterialComponents.Button"/>
-
+                app:backgroundTint="#D32F2F"
+                android:textColor="@android:color/white"
+                app:cornerRadius="4dp"/>
         </LinearLayout>
-
     </LinearLayout>
-
 </androidx.cardview.widget.CardView>

@@ -21,9 +21,9 @@ import android.graphics.Bitmap;
 import android.widget.Toast;
 
 import gt.edu.umg.gpscamara.Fotos.FotoDetalleActivity;
-import gt.edu.umg.gpscamara.FotosGuardadas.BitmapUtils;
-import gt.edu.umg.gpscamara.FotosGuardadas.DatabaseHelper;
-import gt.edu.umg.gpscamara.FotosGuardadas.Foto;
+import gt.edu.umg.gpscamara.BaseDatos.BitmapUtils;
+import gt.edu.umg.gpscamara.BaseDatos.DatabaseHelper;
+import gt.edu.umg.gpscamara.BaseDatos.Foto;
 import gt.edu.umg.gpscamara.R;
 
 public class FotosAdapter extends RecyclerView.Adapter<FotosAdapter.FotoViewHolder> {
@@ -36,6 +36,8 @@ public class FotosAdapter extends RecyclerView.Adapter<FotosAdapter.FotoViewHold
         TextView tvCoordenadas;
         TextView tvFecha;
         TextView tvRecordatorio;
+        TextView tvNombre;      // Nuevo
+        TextView tvAceptado;    // Nuevo
         Button btnEliminar;
 
         FotoViewHolder(View itemView) {
@@ -44,6 +46,8 @@ public class FotosAdapter extends RecyclerView.Adapter<FotosAdapter.FotoViewHold
             tvCoordenadas = itemView.findViewById(R.id.tvCoordenadas);
             tvFecha = itemView.findViewById(R.id.tvFecha);
             tvRecordatorio = itemView.findViewById(R.id.tvRecordatorio);
+            tvNombre = itemView.findViewById(R.id.tvNombre);         // Nuevo
+            tvAceptado = itemView.findViewById(R.id.tvAceptado);    // Nuevo
             btnEliminar = itemView.findViewById(R.id.btnEliminarFoto);
         }
     }
@@ -74,6 +78,10 @@ public class FotosAdapter extends RecyclerView.Adapter<FotosAdapter.FotoViewHold
         // Convertir bytes a Bitmap
         Bitmap bitmap = BitmapUtils.byteArrayToBitmap(foto.getImage());
         holder.imageView.setImageBitmap(bitmap);
+
+        // Mostrar nombre y estado de aceptación
+        holder.tvNombre.setText("Nombre: " + foto.getNombre());
+        holder.tvAceptado.setText(foto.isAceptado() ? "Estado: Aceptado" : "Estado: No aceptado");
 
         // Mostrar coordenadas
         holder.tvCoordenadas.setText(String.format(Locale.getDefault(),

@@ -1,4 +1,4 @@
-package gt.edu.umg.gpscamara.FotosGuardadas;
+package gt.edu.umg.gpscamara.BaseDatos;
 
 
 import android.graphics.Bitmap;

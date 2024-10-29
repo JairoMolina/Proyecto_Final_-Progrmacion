@@ -15,8 +15,8 @@ import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import gt.edu.umg.gpscamara.FotosGuardadas.DatabaseHelper;
-import gt.edu.umg.gpscamara.FotosGuardadas.Foto;
+import gt.edu.umg.gpscamara.BaseDatos.DatabaseHelper;
+import gt.edu.umg.gpscamara.BaseDatos.Foto;
 import gt.edu.umg.gpscamara.R;
 
 public class FotoDetalleActivity extends AppCompatActivity {

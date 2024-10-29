@@ -14,7 +14,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:backgroundTint="#2F6BD3"
+        android:background="#265FA3"/>
 
     <Button
         android:id="@+id/buttnFotosTomadas"
@@ -24,7 +26,9 @@
         app:layout_constraintTop_toBottomOf="@+id/bttnCamara1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        app:backgroundTint="#2F6BD3"
+        android:background="#265FA3"/>
 
     <Button
         android:id="@+id/bttnCreditos"
@@ -34,6 +38,8 @@
         app:layout_constraintTop_toBottomOf="@+id/buttnFotosTomadas"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="20dp" />
+        android:layout_marginTop="20dp"
+        app:backgroundTint="#2F6BD3"
+        android:background="#265FA3"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

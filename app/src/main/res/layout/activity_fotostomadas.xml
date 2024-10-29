@@ -1,71 +1,114 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp">
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#FFFFFF">
 
-    <ImageView
-        android:id="@+id/imageViewFotoTomada"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:scaleType="centerCrop"
-        android:background="#EEEEEE"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_percent="0.4"/>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="4dp">
 
-    <TextView
-        android:id="@+id/tvReminder"
+        <ImageView
+            android:id="@+id/imageViewFotoTomada"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            android:layout_gravity="center"
+            android:background="#E8EAF6"/>
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:hint="Ingrese su nombre"
+        app:boxStrokeColor="#1976D2"
+        app:hintTextColor="#1976D2"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editTextNombre"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:textColor="#000000"/>
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <CheckBox
+        android:id="@+id/checkBoxAcepto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Recordatorio"
-        android:textSize="16sp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/imageViewFotoTomada"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:text="Acepto"
+        android:layout_marginTop="8dp"
+        android:textColor="#1976D2"
+        android:buttonTint="#1976D2"/>
 
-    <Button
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:cardCornerRadius="8dp"
+        app:cardElevation="2dp"
+        app:cardBackgroundColor="#E3F2FD">
+
+        <TextView
+            android:id="@+id/tvReminder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Recordatorio"
+            android:textSize="16sp"
+            android:padding="12dp"
+            android:textColor="#1565C0"/>
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSetReminder"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Establecer Recordatorio"
         android:layout_marginTop="8dp"
-        app:layout_constraintTop_toBottomOf="@id/tvReminder"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:backgroundTint="#1976D2"
+        android:textColor="#FFFFFF"
+        app:cornerRadius="8dp"/>
 
-    <LinearLayout
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bttnGuardar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center"
+        android:text="Guardar"
+        android:enabled="false"
         android:layout_marginTop="16dp"
-        app:layout_constraintTop_toBottomOf="@id/btnSetReminder">
+        app:backgroundTint="#1976D2"
+        android:textColor="#FFFFFF"
+        app:cornerRadius="8dp"/>
 
-        <Button
-            android:id="@+id/bttnTomarFoto"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tomar Foto"
-            android:layout_marginEnd="8dp"/>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bttnEliminar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Eliminar"
+        android:layout_marginTop="8dp"
+        android:textColor="#1976D2"
+        app:strokeColor="#1976D2"
+        app:strokeWidth="1dp"
+        android:backgroundTint="#FFFFFF"
+        app:cornerRadius="8dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
-        <Button
-            android:id="@+id/bttnGuardar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Guardar"
-            android:enabled="false"
-            android:layout_marginEnd="8dp"/>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/bttnTomarFoto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Tomar Foto"
+        android:layout_marginTop="8dp"
+        app:backgroundTint="#2196F3"
+        android:textColor="#FFFFFF"
+        app:cornerRadius="8dp"/>
 
-        <Button
-            android:id="@+id/bttnEliminar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Eliminar"/>
-
-    </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</LinearLayout>
