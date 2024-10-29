@@ -1,13 +1,17 @@
 package gt.edu.umg.gpscamara.FotosGuardadas;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
-public class Foto {
+public class Foto  {
     private int id;
     private byte[] image;
     private double latitude;
     private double longitude;
     private long timestamp;
+    private long reminderDate; // Nuevo campo para la fecha del recordatorio
 
     public Foto() {
     }
@@ -26,4 +30,19 @@ public class Foto {
 
     public long getTimestamp() { return timestamp; }
     public void setTimestamp(long timestamp) { this.timestamp = timestamp; }
+
+    public long getReminderDate() { return reminderDate; }
+    public void setReminderDate(long reminderDate) { this.reminderDate = reminderDate; }
+
+    // Método útil para verificar si tiene un recordatorio pendiente
+    public boolean hasPendingReminder() {
+        return reminderDate > System.currentTimeMillis();
+    }
+
+    // Método útil para obtener la fecha formateada del recordatorio
+    public String getFormattedReminderDate() {
+        if (reminderDate <= 0) return "Sin recordatorio";
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault());
+        return sdf.format(new Date(reminderDate));
+    }
 }

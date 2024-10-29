@@ -1,4 +1,4 @@
-package gt.edu.umg.gpscamara;
+package gt.edu.umg.gpscamara.Fotos;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -8,8 +8,10 @@ import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import gt.edu.umg.gpscamara.Adapter.FotosAdapter;
 import gt.edu.umg.gpscamara.FotosGuardadas.DatabaseHelper;
 import gt.edu.umg.gpscamara.FotosGuardadas.Foto;
+import gt.edu.umg.gpscamara.R;
 
 
 public class VerFotosActivity extends AppCompatActivity {
@@ -50,6 +52,7 @@ public class VerFotosActivity extends AppCompatActivity {
             }
         });
     }
+
 
     @Override
     protected void onDestroy() {

@@ -1,12 +1,15 @@
-package gt.edu.umg.gpscamara;
+package gt.edu.umg.gpscamara.Fotos;
 
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.CalendarContract;
 import android.provider.MediaStore;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -14,11 +17,14 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+
+import java.util.TimeZone;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import gt.edu.umg.gpscamara.FotosGuardadas.BitmapUtils;
 import gt.edu.umg.gpscamara.FotosGuardadas.DatabaseHelper;
+import gt.edu.umg.gpscamara.R;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     private Button buttnFotosGuardadas;
     private static final int CAMERA_PERMISSION_CODE = 100;
     private static final int LOCATION_PERMISSION_CODE = 101;
+    private static final int CALENDAR_PERMISSION_CODE = 102;
     private FusedLocationProviderClient fusedLocationClient;
     private double currentLatitude;
     private double currentLongitude;
@@ -56,11 +63,15 @@ public class MainActivity extends AppCompatActivity {
 
     private void verificarPermisos() {
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED ||
-                checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                checkSelfPermission(Manifest.permission.READ_CALENDAR) != PackageManager.PERMISSION_GRANTED ||
+                checkSelfPermission(Manifest.permission.WRITE_CALENDAR) != PackageManager.PERMISSION_GRANTED) {
 
             requestPermissions(new String[]{
                     Manifest.permission.CAMERA,
-                    Manifest.permission.ACCESS_FINE_LOCATION
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.READ_CALENDAR,
+                    Manifest.permission.WRITE_CALENDAR
             }, CAMERA_PERMISSION_CODE);
         } else {
             obtenerUbicacionYAbrirCamara();
@@ -93,6 +104,25 @@ public class MainActivity extends AppCompatActivity {
         startActivityForResult(intent, 0);
     }
 
+    // Método para agregar un evento al calendario
+    private void agregarEventoCalendario(String titulo, String descripcion, long inicio, long fin) {
+        if (checkSelfPermission(Manifest.permission.WRITE_CALENDAR) ==
+                PackageManager.PERMISSION_GRANTED) {
+            ContentValues values = new ContentValues();
+            values.put(CalendarContract.Events.CALENDAR_ID, 1);
+            values.put(CalendarContract.Events.TITLE, titulo);
+            values.put(CalendarContract.Events.DESCRIPTION, descripcion);
+            values.put(CalendarContract.Events.DTSTART, inicio);
+            values.put(CalendarContract.Events.DTEND, fin);
+            values.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().getID());
+
+            Uri uri = getContentResolver().insert(CalendarContract.Events.CONTENT_URI, values);
+            if (uri != null) {
+                Toast.makeText(this, "Evento agregado al calendario", Toast.LENGTH_SHORT).show();
+            }
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -115,7 +145,6 @@ public class MainActivity extends AppCompatActivity {
             try {
                 byte[] imageBytes = BitmapUtils.bitmapToByteArray(imageBitmap);
 
-                // Usar DatabaseHelper en lugar de Room
                 DatabaseHelper dbHelper = DatabaseHelper.getInstance(getApplicationContext());
                 long id = dbHelper.insertFoto(imageBytes, currentLatitude, currentLongitude);
 
@@ -148,7 +177,9 @@ public class MainActivity extends AppCompatActivity {
         if (requestCode == CAMERA_PERMISSION_CODE) {
             if (grantResults.length > 0 &&
                     grantResults[0] == PackageManager.PERMISSION_GRANTED &&
-                    grantResults[1] == PackageManager.PERMISSION_GRANTED) {
+                    grantResults[1] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[2] == PackageManager.PERMISSION_GRANTED &&
+                    grantResults[3] == PackageManager.PERMISSION_GRANTED) {
                 obtenerUbicacionYAbrirCamara();
             }
         }

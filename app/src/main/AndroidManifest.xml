@@ -2,17 +2,24 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Declaración de características del dispositivo -->
     <uses-feature android:name="android.hardware.camera" android:required="true" />
-
-
     <uses-feature android:name="android.hardware.location.gps" android:required="true" />
 
-    <!-- Permiso de cámara aquí -->
-    <uses-permission android:name="android.permission.CAMERA" />
+    <!-- Todos los permisos agrupados -->
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
         android:maxSdkVersion="28" />
 
     <application
@@ -25,22 +32,44 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.GpsCamara"
         tools:targetApi="31">
+
+        <!-- Activities -->
         <activity
-            android:name=".FotosTomadas"
-            android:exported="false" />
-        <activity
-            android:name=".VerFotosActivity"
-            android:exported="false"/>
-        <activity
-            android:name=".MainActivity"
+            android:name=".Fotos.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".Fotos.FotosTomadas"
+            android:exported="false" />
+        <activity
+            android:name=".Notification.NotificationSettingsActivity"
+            android:exported="false"
+            android:theme="@style/Theme.MaterialComponents.DayNight.Dialog"/>
+
+        <activity
+            android:name=".Fotos.VerFotosActivity"
+            android:exported="false"/>
+
+        <activity
+            android:name=".Fotos.FotoDetalleActivity"
+            android:exported="false" />
+
+
+        <!-- Receiver para notificaciones -->
+        <receiver
+            android:name=".Notification.NotificationReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </receiver>
 
     </application>
 

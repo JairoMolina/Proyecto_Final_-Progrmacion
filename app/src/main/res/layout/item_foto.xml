@@ -18,14 +18,35 @@
             android:id="@+id/imageViewFoto"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:scaleType="centerCrop"/>
+            android:scaleType="centerCrop"
+            android:contentDescription="Foto"/>
+
+        <TextView
+            android:id="@+id/tvFecha"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:textAlignment="center"/>
 
         <TextView
             android:id="@+id/tvCoordenadas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
+            android:textSize="14sp"
             android:textAlignment="center"/>
+
+        <TextView
+            android:id="@+id/tvRecordatorio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textSize="14sp"
+            android:textColor="#4CAF50"
+            android:textAlignment="center"
+            android:visibility="gone"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -34,13 +55,13 @@
             android:gravity="end"
             android:layout_marginTop="8dp">
 
-            <Button
+            <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnEliminarFoto"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Eliminar"
                 android:textSize="12sp"
-                android:backgroundTint="#FF0000"
+                app:backgroundTint="#FF0000"
                 style="@style/Widget.MaterialComponents.Button"/>
 
         </LinearLayout>
