@@ -1,6 +1,5 @@
 package gt.edu.umg.gpscamara.Fotos;
 
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -35,12 +34,10 @@ public class FotoDetalleActivity extends AppCompatActivity {
             Log.d(TAG, "Iniciando onCreate");
             setContentView(R.layout.activity_foto_detalle);
 
-            // Inicializar vistas
             initializeViews();
 
             dbHelper = DatabaseHelper.getInstance(this);
 
-            // Obtener el ID de la foto
             long photoId = getIntent().getLongExtra("photoId", -1);
             Log.d(TAG, "ID de foto recibido: " + photoId);
 
@@ -85,7 +82,6 @@ public class FotoDetalleActivity extends AppCompatActivity {
             Foto foto = dbHelper.getFotoById((int) photoId);
 
             if (foto != null) {
-                // Mostrar la imagen
                 byte[] imageBytes = foto.getImage();
                 if (imageBytes != null && imageBytes.length > 0) {
                     Bitmap bitmap = BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.length);
@@ -98,13 +94,11 @@ public class FotoDetalleActivity extends AppCompatActivity {
                     }
                 }
 
-                // Formatear y mostrar la fecha de captura
                 SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault());
                 String fechaCaptura = sdf.format(new Date(foto.getTimestamp()));
                 tvFecha.setText("Fecha de captura: " + fechaCaptura);
                 Log.d(TAG, "Fecha de captura: " + fechaCaptura);
 
-                // Mostrar ubicación
                 String ubicacion = String.format(Locale.getDefault(),
                         "Ubicación:\nLatitud: %.6f\nLongitud: %.6f",
                         foto.getLatitude(),
@@ -112,7 +106,6 @@ public class FotoDetalleActivity extends AppCompatActivity {
                 tvUbicacion.setText(ubicacion);
                 Log.d(TAG, "Ubicación cargada: " + ubicacion);
 
-                // Mostrar recordatorio si existe
                 if (foto.getReminderDate() > 0) {
                     String fechaRecordatorio = sdf.format(new Date(foto.getReminderDate()));
                     tvRecordatorio.setText("Recordatorio programado para: " + fechaRecordatorio);
@@ -139,7 +132,6 @@ public class FotoDetalleActivity extends AppCompatActivity {
     protected void onDestroy() {
         try {
             super.onDestroy();
-            // Limpiar recursos si es necesario
         } catch (Exception e) {
             Log.e(TAG, "Error en onDestroy: " + e.getMessage(), e);
         }

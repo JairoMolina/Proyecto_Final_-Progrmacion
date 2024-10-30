@@ -1,4 +1,5 @@
 package gt.edu.umg.gpscamara.Fotos;
+
 import android.Manifest;
 import android.app.AlarmManager;
 import android.app.DatePickerDialog;
@@ -46,16 +47,15 @@ public class FotosTomadas extends AppCompatActivity {
     private Button bttnTomarFoto;
     private EditText editTextNombre;
     private CheckBox checkBoxAcepto;
-    private Button btnSetReminder;    // Nuevo
-    private TextView tvReminder;      // Nuevo
+    private Button btnSetReminder;
+    private TextView tvReminder;
     private static final int REQUEST_IMAGE_CAPTURE = 1;
-    private static final int NOTIFICATION_PERMISSION_CODE = 123;  // Nuevo
+    private static final int NOTIFICATION_PERMISSION_CODE = 123;
     private double currentLatitude;
     private double currentLongitude;
     private Bitmap currentImageBitmap;
-    private long selectedReminderTime;  // Nuevo
+    private long selectedReminderTime;
 
-    @SuppressWarnings("deprecation")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         try {
@@ -67,7 +67,7 @@ public class FotosTomadas extends AppCompatActivity {
             initializeDatabase();
             getIntentData();
             setupListeners();
-            checkNotificationPermissions(); // Nuevo
+            checkNotificationPermissions();
 
             Log.d(TAG, "onCreate completado exitosamente");
         } catch (Exception e) {
@@ -85,8 +85,8 @@ public class FotosTomadas extends AppCompatActivity {
             bttnTomarFoto = findViewById(R.id.bttnTomarFoto);
             editTextNombre = findViewById(R.id.editTextNombre);
             checkBoxAcepto = findViewById(R.id.checkBoxAcepto);
-            btnSetReminder = findViewById(R.id.btnSetReminder);    // Nuevo
-            tvReminder = findViewById(R.id.tvReminder);           // Nuevo
+            btnSetReminder = findViewById(R.id.btnSetReminder);
+            tvReminder = findViewById(R.id.tvReminder);
 
             Log.d(TAG, "Vistas inicializadas correctamente");
         } catch (Exception e) {
@@ -138,13 +138,11 @@ public class FotosTomadas extends AppCompatActivity {
     }
 
     private void setupListeners() {
-        // CheckBox listener
         checkBoxAcepto.setOnCheckedChangeListener((buttonView, isChecked) -> {
             validateInputs();
             Log.d(TAG, "Estado del checkbox cambiado: " + isChecked);
         });
 
-        // EditText listener
         editTextNombre.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -159,7 +157,6 @@ public class FotosTomadas extends AppCompatActivity {
             }
         });
 
-        // Botón Guardar
         bttnGuardar.setOnClickListener(v -> {
             if (currentImageBitmap != null) {
                 String nombre = editTextNombre.getText().toString();
@@ -170,13 +167,8 @@ public class FotosTomadas extends AppCompatActivity {
             }
         });
 
-        // Botón Eliminar
         bttnEliminar.setOnClickListener(v -> clearPhoto());
-
-        // Botón Tomar Foto
         bttnTomarFoto.setOnClickListener(v -> openCamera());
-
-        // Botón Recordatorio (Nuevo)
         btnSetReminder.setOnClickListener(v -> {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
                     ActivityCompat.checkSelfPermission(this,
@@ -189,7 +181,7 @@ public class FotosTomadas extends AppCompatActivity {
         });
     }
 
-    private void showDateTimePicker() {  // Nuevo
+    private void showDateTimePicker() {
         Calendar calendar = Calendar.getInstance();
 
         DatePickerDialog datePickerDialog = new DatePickerDialog(
@@ -244,8 +236,8 @@ public class FotosTomadas extends AppCompatActivity {
         bttnGuardar.setEnabled(false);
         editTextNombre.setText("");
         checkBoxAcepto.setChecked(false);
-        selectedReminderTime = 0;  // Nuevo
-        tvReminder.setText("Recordatorio");  // Nuevo
+        selectedReminderTime = 0;
+        tvReminder.setText("Recordatorio");
         Log.d(TAG, "Foto eliminada");
         Toast.makeText(this, "Foto eliminada", Toast.LENGTH_SHORT).show();
     }
@@ -339,12 +331,12 @@ public class FotosTomadas extends AppCompatActivity {
             try {
                 byte[] imageBytes = BitmapUtils.bitmapToByteArray(imageBitmap);
                 long id = dbHelper.insertFoto(imageBytes, nombre, latitude, longitude,
-                        selectedReminderTime, aceptado);  // Modificado
+                        selectedReminderTime, aceptado);
 
                 runOnUiThread(() -> {
                     if (id != -1) {
                         Log.d(TAG, "Foto guardada con ID: " + id);
-                        if (selectedReminderTime > 0) {  // Nuevo
+                        if (selectedReminderTime > 0) {
                             scheduleNotification(id, selectedReminderTime);
                         }
                         Toast.makeText(this, "Foto guardada exitosamente",

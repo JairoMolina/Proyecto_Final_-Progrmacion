@@ -1,5 +1,4 @@
-package gt.edu.umg.gpscamara.Fotos;
-
+package gt.edu.umg.gpscamara;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
@@ -17,12 +16,14 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 
 ;
-import gt.edu.umg.gpscamara.R;
+import gt.edu.umg.gpscamara.Fotos.FotosTomadas;
+import gt.edu.umg.gpscamara.Fotos.VerFotosActivity;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private Button bttnCamara1;
     private Button buttnFotosGuardadas;
+
     private static final int CAMERA_PERMISSION_CODE = 100;
     private static final int LOCATION_PERMISSION_CODE = 101;
     private static final int CALENDAR_PERMISSION_CODE = 102;
@@ -38,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.maincamara);
 
-        // Inicializar componentes
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         bttnCamara1 = findViewById(R.id.bttnCamara1);
         buttnFotosGuardadas = findViewById(R.id.buttnFotosTomadas);

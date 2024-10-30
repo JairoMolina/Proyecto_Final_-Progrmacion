@@ -13,11 +13,10 @@ import gt.edu.umg.gpscamara.BaseDatos.DatabaseHelper;
 import gt.edu.umg.gpscamara.BaseDatos.Foto;
 import gt.edu.umg.gpscamara.R;
 
-
 public class VerFotosActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private FotosAdapter adapter;
-    private DatabaseHelper dbHelper;  // Cambio de AppDataBase a DatabaseHelper
+    private DatabaseHelper dbHelper;
     private ExecutorService executorService;
 
     @Override
@@ -28,7 +27,6 @@ public class VerFotosActivity extends AppCompatActivity {
         recyclerView = findViewById(R.id.recyclerViewFotos);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        // Inicializar DatabaseHelper en lugar de AppDataBase
         dbHelper = DatabaseHelper.getInstance(getApplicationContext());
         executorService = Executors.newSingleThreadExecutor();
 
@@ -44,7 +42,6 @@ public class VerFotosActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        // Pasar el contexto al adaptador
                         adapter = new FotosAdapter(VerFotosActivity.this, fotos);
                         recyclerView.setAdapter(adapter);
                     }
@@ -52,7 +49,6 @@ public class VerFotosActivity extends AppCompatActivity {
             }
         });
     }
-
 
     @Override
     protected void onDestroy() {

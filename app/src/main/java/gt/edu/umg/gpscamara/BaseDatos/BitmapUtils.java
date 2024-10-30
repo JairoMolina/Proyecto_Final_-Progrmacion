@@ -1,6 +1,5 @@
 package gt.edu.umg.gpscamara.BaseDatos;
 
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import java.io.ByteArrayOutputStream;

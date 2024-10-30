@@ -1,7 +1,5 @@
 package gt.edu.umg.gpscamara.BaseDatos;
 
-
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -22,7 +20,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "FotosDB";
     private static final int DATABASE_VERSION = 3;
 
-    // Tabla Fotos
     public static final String TABLE_FOTOS = "fotos";
     public static final String COLUMN_ID = "id";
     public static final String COLUMN_IMAGE = "image";
@@ -33,7 +30,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COLUMN_NOMBRE = "nombre";
     public static final String COLUMN_ACEPTADO = "aceptado";
 
-    // Crear tabla con todas las columnas
     private static final String CREATE_TABLE_FOTOS =
             "CREATE TABLE " + TABLE_FOTOS + "("
                     + COLUMN_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
@@ -66,12 +62,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         if (oldVersion < 2) {
-            // Agregar columna reminder_date
             db.execSQL("ALTER TABLE " + TABLE_FOTOS +
                     " ADD COLUMN " + COLUMN_REMINDER_DATE + " INTEGER;");
         }
         if (oldVersion < 3) {
-            // Agregar columnas nombre y aceptado
             db.execSQL("ALTER TABLE " + TABLE_FOTOS +
                     " ADD COLUMN " + COLUMN_NOMBRE + " TEXT NOT NULL DEFAULT 'Sin nombre';");
             db.execSQL("ALTER TABLE " + TABLE_FOTOS +
@@ -79,7 +73,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    // Método principal para insertar foto con todos los campos
     public long insertFoto(byte[] imageBytes, String nombre, double latitude, double longitude,
                            long reminderDate, boolean aceptado) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -97,7 +90,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return id;
     }
 
-    // Métodos sobrecargados para mantener compatibilidad
     public long insertFoto(byte[] imageBytes, String nombre, double latitude, double longitude, long reminderDate) {
         return insertFoto(imageBytes, nombre, latitude, longitude, reminderDate, false);
     }
@@ -106,14 +98,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return insertFoto(imageBytes, nombre, latitude, longitude, 0, aceptado);
     }
 
-    // Eliminar foto
     public void deleteFoto(int id) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TABLE_FOTOS, COLUMN_ID + " = ?", new String[]{String.valueOf(id)});
         db.close();
     }
 
-    // Obtener todas las fotos
     public List<Foto> getAllFotos() {
         List<Foto> fotos = new ArrayList<>();
         String selectQuery = "SELECT * FROM " + TABLE_FOTOS + " ORDER BY " + COLUMN_TIMESTAMP + " DESC";
@@ -151,7 +141,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return fotos;
     }
 
-    // Obtener una foto por ID
     public Foto getFotoById(int id) {
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor cursor = db.query(TABLE_FOTOS,
@@ -177,7 +166,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return foto;
     }
 
-    // Obtener fotos con recordatorios pendientes
     public List<Foto> getFotosWithPendingReminders() {
         List<Foto> fotos = new ArrayList<>();
         long currentTime = System.currentTimeMillis();
@@ -219,7 +207,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         return fotos;
     }
 
-    // Actualizar fecha de recordatorio
     public void updateReminderDate(int id, long reminderDate) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();

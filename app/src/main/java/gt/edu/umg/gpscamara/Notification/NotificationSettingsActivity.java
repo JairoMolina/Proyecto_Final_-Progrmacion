@@ -24,20 +24,17 @@ public class NotificationSettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_notification_settings);
 
-        // Verificar y solicitar permisos si es necesario
         checkNotificationPermissions();
 
-        // Botón para abrir configuración de notificaciones
         findViewById(R.id.btnOpenSettings).setOnClickListener(v -> openNotificationSettings());
     }
 
     private void checkNotificationPermissions() {
-        if (Build.VERSION.SDK_INT >= 33) {  // Android 13 o superior
+        if (Build.VERSION.SDK_INT >= 33) {
             if (ContextCompat.checkSelfPermission(this,
                     "android.permission.POST_NOTIFICATIONS") !=
                     PackageManager.PERMISSION_GRANTED) {
 
-                // Verificar si debemos mostrar una explicación
                 if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                         "android.permission.POST_NOTIFICATIONS")) {
                     showPermissionExplanationDialog();
@@ -100,7 +97,6 @@ public class NotificationSettingsActivity extends AppCompatActivity {
                         Toast.LENGTH_SHORT).show();
                 finish();
             } else {
-                // Si el permiso fue denegado, mostrar diálogo para ir a configuración
                 showSettingsPrompt();
             }
         }

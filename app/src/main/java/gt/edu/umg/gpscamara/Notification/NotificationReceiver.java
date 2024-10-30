@@ -33,7 +33,6 @@ public class NotificationReceiver extends BroadcastReceiver {
                 createNotificationChannel(context);
                 showNotification(context, photoId);
             } else {
-                // Abrir actividad para solicitar permisos
                 Intent settingsIntent = new Intent(context, NotificationSettingsActivity.class);
                 settingsIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 context.startActivity(settingsIntent);
@@ -44,12 +43,10 @@ public class NotificationReceiver extends BroadcastReceiver {
     private boolean areNotificationsEnabled(Context context) {
         NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
 
-        // Verificar si las notificaciones están habilitadas a nivel de app
         if (!notificationManager.areNotificationsEnabled()) {
             return false;
         }
 
-        // Para Android 13 (API 33) y superior, verificar permiso específico
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             return ActivityCompat.checkSelfPermission(context,
                     Manifest.permission.POST_NOTIFICATIONS) == PackageManager.PERMISSION_GRANTED;
@@ -89,7 +86,6 @@ public class NotificationReceiver extends BroadcastReceiver {
                 PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE
         );
 
-        // Intent para configuración de notificaciones
         Intent settingsIntent = new Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
                 .putExtra(Settings.EXTRA_APP_PACKAGE, context.getPackageName());
         PendingIntent settingsPendingIntent = PendingIntent.getActivity(
